@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>flatiron-director</title>
+    <script src="/bower_components/platform/platform.js"></script>
+    <link rel="import" href="/bower_components/polymer/polymer.html">
+    <link rel="import" href="/bower_components/flatiron-director/flatiron-director.html">
+    <link rel="import" href="/elements/music-demo.html">
+    <link rel="stylesheet" href="/css/styles.css" shim-shadowdom>
+  </head>
+  <body unresolved>
+    <template is="auto-binding">
+      <flatiron-director route="{{route}}" autoHash></flatiron-director>
+      <div class="green"></div>
+      <music-demo route="{{route}}"></music-demo>
+      <script>
+        document.querySelector('music-demo').albums = [
+          { route: 'tycho-fragments', artist: 'Tycho', album: 'Fragments', color: '#f4db33' },
+          { route: 'tycho-past-prologue', artist: 'Tycho', album: 'Past Prologue', color: '#972ff8' },
+          { route: 'tycho-spectre', artist: 'Tycho', album: 'Spectre', color: '#7dd6fe' },
+          { route: 'tycho-awake', artist: 'Tycho', album: 'Awake', color: '#dc3c84' }
+        ];
+      </script>
+    </template>
+  </body>
+</html>

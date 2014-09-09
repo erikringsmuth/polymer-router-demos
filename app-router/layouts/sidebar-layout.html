@@ -1,0 +1,27 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-scaffold/core-scaffold.html">
+<link rel="import" href="/bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="/bower_components/core-toolbar/core-toolbar.html">
+<link rel="import" href="/bower_components/core-item/core-item.html">
+<link rel="import" href="/bower_components/pushstate-anchor/src/pushstate-anchor.html">
+
+<polymer-element name="sidebar-layout" attributes="selected" noscript>
+  <template>
+    <link rel="stylesheet" href="sidebar-layout.css">
+    <core-scaffold>
+      <core-header-panel navigation flex mode="seamed">
+        <core-toolbar>app-router</core-toolbar>
+        <a is="pushstate-anchor" active?="{{selected == 'home'}}" href="/"><core-item icon="home" label="Home"></core-item></a>
+        <a is="pushstate-anchor" active?="{{selected == 'demo'}}" href="/demo/1337?queryParam1=Routing%20with%20Web%20Components!"><core-item icon="polymer" label="Data Binding"></core-item></a>
+        <a is="pushstate-anchor" active?="{{selected == 'notes'}}" href="/notes"><core-item icon="info-outline" label="Notes"></core-item></a>
+        <a href="https://github.com/erikringsmuth/app-router"><core-item icon="exit-to-app" label="GitHub"></core-item></a>
+      </core-header-panel>
+      <div tool>
+        <content select=".title"></content>
+      </div>
+      <div class="content">
+        <content></content>
+      </div>
+    </core-scaffold>
+  </template>
+</polymer-element>

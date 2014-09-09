@@ -1,0 +1,19 @@
+{
+  "name": "flatiron-director",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#>=0.4.0 <1.0.0"
+  },
+  "homepage": "https://github.com/PolymerLabs/flatiron-director",
+  "version": "0.4.0",
+  "_release": "0.4.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.4.0",
+    "commit": "328d4e475d3da989b855ac8802c46175e7c6c197"
+  },
+  "_source": "git://github.com/PolymerLabs/flatiron-director.git",
+  "_target": "~0.4.0",
+  "_originalSource": "PolymerLabs/flatiron-director",
+  "_direct": true
+}

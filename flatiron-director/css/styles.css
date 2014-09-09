@@ -1,0 +1,13 @@
+body {
+  font-family: 'Roboto 2', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+  background: #f1f1f1;
+}
+.green {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 350px;
+  background: #70c26f;
+}

@@ -1,0 +1,49 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-animated-pages/core-animated-pages.html">
+<link rel="import" href="/bower_components/core-toolbar/core-toolbar.html">
+
+<polymer-element name="music-demo" attributes="route albums">
+  <template>
+    <link rel="stylesheet" href="music-demo.css">
+    <core-animated-pages selected="{{route}}" valueattr="route" transitions="hero-transition">
+      <section route="">
+        <div class="chip-container">
+          <template repeat="{{albums as album}}">
+            <div class="chip" hero hero-id="{{album.route}}" link="{{album.route}}" on-tap="{{navigate}}">
+              <div class="chip-top" hero hero-id="{{album.route}}-art" style="background:{{album.color}};"></div>
+              <div class="chip-bottom">
+                <div class="chip-album-title">{{album.album}}</div>
+                <div class="chip-artist">{{album.artist}}</div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+      <template repeat="{{albums as album}}">
+        <section route="{{album.route}}" class="details">
+          <div class="card" layout horizontal hero hero-id="{{album.route}}" link="" on-tap="{{navigate}}">
+            <div class="card-left" hero hero-id="{{album.route}}-art" style="background:{{album.color}};"></div>
+            <div class="card-right" flex>
+              <div layout horizontal center>
+                <div>
+                  <div class="card-icon" style="background:{{album.color}};"></div>
+                </div>
+                <div flex>
+                  <div class="card-album-title">{{album.album}}</div>
+                  <div class="card-album-artist">{{album.artist}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </template>
+    </core-animated-pages>
+  </template>
+  <script>
+    Polymer('music-demo', {
+      navigate: function(event) {
+        this.route = event.currentTarget.getAttribute('link');
+      }
+    });
+  </script>
+</polymer-element>

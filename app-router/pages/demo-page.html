@@ -1,0 +1,33 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/layouts/sidebar-layout.html">
+
+<polymer-element name="demo-page" attributes="pathArg1 queryParam1" noscript>
+  <template>
+    <sidebar-layout selected="demo">
+      <div class="title">Data Binding Demo</div>
+
+      <p>Path variables and query parameters are automatically attached to the element's attributes. Change values in the address bar and see them change here.</p>
+
+      <ul>
+        <li><code>pathArg1 = {{pathArg1}}</code></li>
+        <li><code>queryParam1 = {{queryParam1}}</code></li>
+      </ul>
+
+      <h3>Example Route and Page</h3>
+
+<pre>&lt;app-router&gt;
+  &lt;app-route path="/demo/:pathArg1" import="pages/demo-page.html"&gt;&lt;/app-route&gt;
+&lt;/app-router&gt;</pre>
+
+<pre>&lt;polymer-element name="demo-page" attributes="pathArg1 queryParam1" noscript&gt;
+  &lt;template&gt;
+    &lt;div class="title"&gt;Demo&lt;/div&gt;
+    &lt;p&gt;Demo page using a path variable {{'\{{pathArg1}\}'}} and query parameter {{'\{{queryParam1}\}'}}!&lt;/p&gt;
+  &lt;/template&gt;
+&lt;/polymer-element&gt;</pre>
+
+      <p>Path variables are defined in the <code>app-route</code> and on the page's attributes. Query parameters are only defined on the page's attributes.</p>
+
+    </sidebar-layout>
+  </template>
+</polymer-element>
