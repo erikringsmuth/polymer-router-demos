@@ -1,6 +1,6 @@
 ## Polymer Router Demos
 
-[Download](https://github.com/erikringsmuth/polymer-routing-demos/archive/master.zip) and un-zip `polymer-router-demos`.
+[Download](https://github.com/erikringsmuth/polymer-router-demos/archive/master.zip) and un-zip `polymer-router-demos`.
 
 #### no-router
 A router is completely optional. You can load HTML files directly.
