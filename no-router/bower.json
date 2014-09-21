@@ -6,8 +6,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "polymer": "Polymer/polymer#~0.4.0",
-    "platform": "Polymer/platform#~0.4.0",
-    "core-elements": "Polymer/core-elements#~0.4.0"
+    "polymer": "Polymer/polymer#~0.4.1",
+    "platform": "Polymer/platform#~0.4.1",
+    "core-elements": "Polymer/core-elements#~0.4.1"
   }
 }
