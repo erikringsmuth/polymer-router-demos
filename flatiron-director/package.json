@@ -1,15 +1,20 @@
 {
   "name": "polymer-router-demos",
+  "description": "Demo routing with Polymer",
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/erikringsmuth/polymer-router-demos.git"
+    "url": "https://github.com/erikringsmuth/polymer-router-demos"
   },
+  "license": "MIT",
   "dependencies": {
     "express": "^4.7.2"
   },
   "engines": {
     "node": "0.10.x"
   },
-  "main": "server.js"
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
 }

@@ -5,6 +5,8 @@ Examples showing the major concepts for routing in Polymer.
 [Download](https://github.com/erikringsmuth/polymer-router-demos/archive/master.zip) and un-zip `polymer-router-demos`.
 
 #### no-router
+[Live Demo](http://polymer-no-router.herokuapp.com/)
+
 A router is completely optional. You can load HTML files directly.
 
 1. Open a terminal in the `no-router` directory
@@ -12,6 +14,8 @@ A router is completely optional. You can load HTML files directly.
 3. Open [http://localhost:8080/](http://localhost:8080/)
 
 #### app-router
+[Live Demo](http://polymer-app-router.herokuapp.com/)
+
 The [&lt;app-router&gt;](http://erikringsmuth.github.io/app-router/) adds data binding and can lazy-load content. It's similar to the Angular ui-router and Backbone's router.
 
 1. Open a terminal in the `app-router` directory
@@ -19,6 +23,8 @@ The [&lt;app-router&gt;](http://erikringsmuth.github.io/app-router/) adds data b
 3. Open [http://localhost:8080/](http://localhost:8080/)
 
 #### flatiron-director
+[Live Demo](http://polymer-flatiron-director.herokuapp.com/)
+
 [&lt;flatiron-director&gt;](https://github.com/PolymerLabs/flatiron-director) with [&lt;core-animated-pages&gt;](http://www.polymer-project.org/docs/elements/core-elements.html#core-animated-pages) and a modified version of Polymer's [music demo](http://www.polymer-project.org/components/core-animated-pages/demos/music.html). This routes like a mobile app.
 
 1. Open a terminal in the `flatiron-director` directory
