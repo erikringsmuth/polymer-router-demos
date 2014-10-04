@@ -14,12 +14,12 @@
     "prettify-element": "Polymer/prettify-element#^0.4.0"
   },
   "homepage": "https://github.com/Polymer/core-doc-viewer",
-  "version": "0.4.1",
-  "_release": "0.4.1",
+  "version": "0.4.2",
+  "_release": "0.4.2",
   "_resolution": {
     "type": "version",
-    "tag": "0.4.1",
-    "commit": "9be8efaf6e42d09dc1b8ff83d7ebf8e5ac210221"
+    "tag": "0.4.2",
+    "commit": "820d2b3334f6657fb93a9067ab77100a14784291"
   },
   "_source": "git://github.com/Polymer/core-doc-viewer.git",
   "_target": "^0.4.0",

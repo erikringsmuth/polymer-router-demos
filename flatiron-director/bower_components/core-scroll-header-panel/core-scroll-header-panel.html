@@ -57,7 +57,7 @@ or class `content` to delineate the content section.
 
   <link rel="stylesheet" href="core-scroll-header-panel.css">
 
-  <div id="mainContainer" on-scroll="{{scroll}}">
+  <div id="mainContainer">
   
     <content id="mainContent" select="[content], .content"></content>
     
@@ -76,6 +76,7 @@ or class `content` to delineate the content section.
   
 </template>
 <script>
+(function() {
 
   Polymer('core-scroll-header-panel', {
     
@@ -147,6 +148,7 @@ or class `content` to delineate the content section.
        *
        * @attribute headerHeight
        * @type number
+       * @default 0
        */
       headerHeight: 0,
 
@@ -158,6 +160,7 @@ or class `content` to delineate the content section.
        *
        * @attribute condensedHeaderHeight
        * @type number
+       * @default 0
        */
       condensedHeaderHeight: 0,
       
@@ -183,6 +186,15 @@ or class `content` to delineate the content section.
       'headerMargin fixed': 'setup'
     },
     
+    ready: function() {
+      this._scrollHandler = this.scroll.bind(this);
+      this.scroller.addEventListener('scroll', this._scrollHandler);
+    },
+    
+    detached: function() {
+      this.scroller.removeEventListener('scroll', this._scrollHandler);
+    },
+    
     domReady: function() {
       this.async('measureHeaderHeight');
     },
@@ -191,13 +203,25 @@ or class `content` to delineate the content section.
       return this.$.headerContent.getDistributedNodes()[0];
     },
     
+    /**
+     * Returns the scrollable element.
+     *
+     * @property scroller
+     * @type Object
+     */
     get scroller() {
       return this.$.mainContainer;
     },
     
+    /**
+     * Invoke this to tell `core-scroll-header-panel` to re-measure the header's
+     * height.
+     *
+     * @method measureHeaderHeight
+     */
     measureHeaderHeight: function() {
       var header = this.header;
-      if (this.header) {
+      if (header && header.offsetHeight) {
         this.headerHeight = header.offsetHeight;
       }
     },
@@ -276,8 +300,8 @@ or class `content` to delineate the content section.
     },
     
     translateY: function(s, y) {
-      s.transform = s.webkitTransform = y == null ? '' : 
-          'translate3d(0, ' + y + 'px, 0)';
+      var t = y == null ? '' : 'translate3d(0, ' + y + 'px, 0)';
+      setTransform(s, t);
     },
     
     scroll: function(event) {
@@ -296,7 +320,7 @@ or class `content` to delineate the content section.
       }
       
       if (!event || !this.fixed && y !== this.y) {
-        requestAnimationFrame(this.transformHeader.bind(this, y));
+        this.transformHeader(y);
       }
       
       this.prevScrollTop = Math.max(sTop, 0);
@@ -308,6 +332,19 @@ or class `content` to delineate the content section.
     }
 
   });
+  
+  //determine proper transform mechanizm
+  if (document.documentElement.style.transform !== undefined) {
+    var setTransform = function(style, string) {
+      style.transform = string;
+    }
+  } else {
+    var setTransform = function(style, string) {
+      style.webkitTransform = string;
+    }
+  }
+
+})();
 
 </script>
 </polymer-element>

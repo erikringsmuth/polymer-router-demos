@@ -6,12 +6,12 @@
     "polymer": "Polymer/polymer#^0.4.0"
   },
   "homepage": "https://github.com/Polymer/core-component-page",
-  "version": "0.4.1",
-  "_release": "0.4.1",
+  "version": "0.4.2",
+  "_release": "0.4.2",
   "_resolution": {
     "type": "version",
-    "tag": "0.4.1",
-    "commit": "7897d4fa03095ccb1aeff723d7b4ac424abbdf69"
+    "tag": "0.4.2",
+    "commit": "e1e750856224647d37cac4614b3b14cf57fcb37d"
   },
   "_source": "git://github.com/Polymer/core-component-page.git",
   "_target": "^0.4.0",
