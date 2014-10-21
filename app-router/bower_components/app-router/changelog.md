@@ -1,5 +1,16 @@
 ## app-router change log
 
+#### v2.0.0
+New features
+
+- Added support for `<core-animated-pages>`. Example: set up the router like `<app-router core-animated-pages transitions="hero-transition cross-fade">` then include the `hero` and `cross-fade` attributes on the elements you want transitioned.
+
+Breaking changes
+
+- Previously the active route's content was under an `<active-route>` element. Now the content for the route is under it's `<app-route>` element. This changed to support `<core-animated-pages>`.
+- The `<active-route>` element and `router.activeRouteContent` have been removed.
+- Removed the `shadow` attribute from the `<app-router>`. This was applied to the `<active-route>` element which no longer exists.
+
 #### v1.0.0
 Breaking changes
 
