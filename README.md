@@ -12,7 +12,7 @@ A router is completely optional. You can load HTML files directly.
 3. Open [http://localhost:8080/](http://localhost:8080/)
 
 #### app-router ([live demo](http://polymer-app-router.herokuapp.com/))
-The [&lt;app-router&gt;](http://erikringsmuth.github.io/app-router/) adds data binding and can lazy-load content. It's similar to the Angular ui-router and Backbone's router.
+The [&lt;app-router&gt;](https://erikringsmuth.github.io/app-router/) adds data binding and can lazy-load content. It's similar to the Angular ui-router and Backbone's router.
 
 1. Open a terminal in the `app-router` directory
 2. Start the express.js server with `node server.js`
