@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="sidebar-layout.css">
     <core-scaffold>
       <core-header-panel navigation flex mode="seamed">
-        <core-toolbar>app-router</core-toolbar>
-        <a is="pushstate-anchor" active?="{{selected == 'home'}}" href="/"><core-item icon="home" label="Home"></core-item></a>
-        <a is="pushstate-anchor" active?="{{selected == 'demo'}}" href="/demo/1337?queryParam1=Routing%20with%20Web%20Components!"><core-item icon="polymer" label="Data Binding"></core-item></a>
-        <a is="pushstate-anchor" active?="{{selected == 'notes'}}" href="/notes"><core-item icon="info-outline" label="Notes"></core-item></a>
-        <a href="https://github.com/erikringsmuth/app-router"><core-item icon="exit-to-app" label="GitHub"></core-item></a>
+        <core-toolbar>app-router-examples</core-toolbar>
+        <core-item icon="home" label="Home" active?="{{selected == 'home'}}"><a is="pushstate-anchor" href="/"></a></core-item>
+        <core-item icon="polymer" label="Data Binding" active?="{{selected == 'demo'}}"><a is="pushstate-anchor" href="/demo/1337?queryParam1=Routing%20with%20Web%20Components!"></a></core-item>
+        <core-item icon="info-outline" label="Notes" active?="{{selected == 'notes'}}"><a is="pushstate-anchor" href="/notes"></a></core-item>
+        <core-item icon="exit-to-app" label="GitHub"><a href="https://github.com/erikringsmuth/app-router"></a></core-item>
       </core-header-panel>
       <div tool>
         <content select=".title"></content>
