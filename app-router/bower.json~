@@ -1,0 +1,15 @@
+{
+  "name": "polymer-router-demos",
+  "version": "0.0.0",
+  "authors": [
+    "Erik Ringsmuth <erik.ringsmuth@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "app-router": "~2.3.0",
+    "pushstate-anchor": "~0.3.0",
+    "polymer": "~0.5.1",
+    "webcomponentsjs": "~0.5.1",
+    "core-elements": "Polymer/core-elements#~0.5.1"
+  }
+}

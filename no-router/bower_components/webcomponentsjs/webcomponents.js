@@ -7,14 +7,13 @@
  * Code distributed by Google as part of the polymer project is also
  * subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
  */
-// @version 0.5.1
+// @version 0.5.4
 window.WebComponents = window.WebComponents || {};
 
 (function(scope) {
   var flags = scope.flags || {};
   var file = "webcomponents.js";
   var script = document.querySelector('script[src*="' + file + '"]');
-  var flags = {};
   if (!flags.noOpts) {
     location.search.slice(1).split("&").forEach(function(o) {
       o = o.split("=");
@@ -1760,7 +1759,7 @@ if (WebComponents.flags.shadow) {
     var originalInsertBefore = OriginalNode.prototype.insertBefore;
     var originalRemoveChild = OriginalNode.prototype.removeChild;
     var originalReplaceChild = OriginalNode.prototype.replaceChild;
-    var isIe = /Trident/.test(navigator.userAgent);
+    var isIe = /Trident|Edge/.test(navigator.userAgent);
     var removeChildOriginalHelper = isIe ? function(parent, child) {
       try {
         originalRemoveChild.call(parent, child);
@@ -1993,7 +1992,7 @@ if (WebComponents.flags.shadow) {
         for (var i = 0, n; i < nodes.length; i++) {
           n = nodes[i];
           if (n.nodeType === Node.TEXT_NODE) {
-            if (!modNode && !n.data.length) this.removeNode(n); else if (!modNode) modNode = n; else {
+            if (!modNode && !n.data.length) this.removeChild(n); else if (!modNode) modNode = n; else {
               s += n.data;
               remNodes.push(n);
             }
@@ -2328,51 +2327,52 @@ if (WebComponents.flags.shadow) {
   })(window.ShadowDOMPolyfill);
   (function(scope) {
     "use strict";
-    var setWrapper = scope.setWrapper;
     var unsafeUnwrap = scope.unsafeUnwrap;
+    var enqueueMutation = scope.enqueueMutation;
+    function getClass(el) {
+      return unsafeUnwrap(el).getAttribute("class");
+    }
+    function enqueueClassAttributeChange(el, oldValue) {
+      enqueueMutation(el, "attributes", {
+        name: "class",
+        namespace: null,
+        oldValue: oldValue
+      });
+    }
     function invalidateClass(el) {
       scope.invalidateRendererBasedOnAttribute(el, "class");
     }
-    function DOMTokenList(impl, ownerElement) {
-      setWrapper(impl, this);
-      this.ownerElement_ = ownerElement;
-    }
-    DOMTokenList.prototype = {
-      constructor: DOMTokenList,
-      get length() {
-        return unsafeUnwrap(this).length;
-      },
-      item: function(index) {
-        return unsafeUnwrap(this).item(index);
-      },
-      contains: function(token) {
-        return unsafeUnwrap(this).contains(token);
-      },
-      add: function() {
-        unsafeUnwrap(this).add.apply(unsafeUnwrap(this), arguments);
-        invalidateClass(this.ownerElement_);
-      },
-      remove: function() {
-        unsafeUnwrap(this).remove.apply(unsafeUnwrap(this), arguments);
-        invalidateClass(this.ownerElement_);
-      },
-      toggle: function(token) {
-        var rv = unsafeUnwrap(this).toggle.apply(unsafeUnwrap(this), arguments);
-        invalidateClass(this.ownerElement_);
-        return rv;
-      },
-      toString: function() {
-        return unsafeUnwrap(this).toString();
+    function changeClass(tokenList, method, args) {
+      var ownerElement = tokenList.ownerElement_;
+      if (ownerElement == null) {
+        return method.apply(tokenList, args);
       }
+      var oldValue = getClass(ownerElement);
+      var retv = method.apply(tokenList, args);
+      if (getClass(ownerElement) !== oldValue) {
+        enqueueClassAttributeChange(ownerElement, oldValue);
+        invalidateClass(ownerElement);
+      }
+      return retv;
+    }
+    var oldAdd = DOMTokenList.prototype.add;
+    DOMTokenList.prototype.add = function() {
+      changeClass(this, oldAdd, arguments);
     };
-    scope.wrappers.DOMTokenList = DOMTokenList;
+    var oldRemove = DOMTokenList.prototype.remove;
+    DOMTokenList.prototype.remove = function() {
+      changeClass(this, oldRemove, arguments);
+    };
+    var oldToggle = DOMTokenList.prototype.toggle;
+    DOMTokenList.prototype.toggle = function() {
+      return changeClass(this, oldToggle, arguments);
+    };
   })(window.ShadowDOMPolyfill);
   (function(scope) {
     "use strict";
     var ChildNodeInterface = scope.ChildNodeInterface;
     var GetElementsByInterface = scope.GetElementsByInterface;
     var Node = scope.wrappers.Node;
-    var DOMTokenList = scope.wrappers.DOMTokenList;
     var ParentNodeInterface = scope.ParentNodeInterface;
     var SelectorsInterface = scope.SelectorsInterface;
     var addWrapNodeListMethod = scope.addWrapNodeListMethod;
@@ -2435,7 +2435,9 @@ if (WebComponents.flags.shadow) {
       get classList() {
         var list = classListTable.get(this);
         if (!list) {
-          classListTable.set(this, list = new DOMTokenList(unsafeUnwrap(this).classList, this));
+          list = unsafeUnwrap(this).classList;
+          list.ownerElement_ = this;
+          classListTable.set(this, list);
         }
         return list;
       },
@@ -4012,7 +4014,8 @@ if (WebComponents.flags.shadow) {
       };
       forwardMethodsToWrapper([ window.HTMLDocument || window.Document ], [ "registerElement" ]);
     }
-    forwardMethodsToWrapper([ window.HTMLBodyElement, window.HTMLDocument || window.Document, window.HTMLHeadElement, window.HTMLHtmlElement ], [ "appendChild", "compareDocumentPosition", "contains", "getElementsByClassName", "getElementsByTagName", "getElementsByTagNameNS", "insertBefore", "querySelector", "querySelectorAll", "removeChild", "replaceChild" ].concat(matchesNames));
+    forwardMethodsToWrapper([ window.HTMLBodyElement, window.HTMLDocument || window.Document, window.HTMLHeadElement, window.HTMLHtmlElement ], [ "appendChild", "compareDocumentPosition", "contains", "getElementsByClassName", "getElementsByTagName", "getElementsByTagNameNS", "insertBefore", "querySelector", "querySelectorAll", "removeChild", "replaceChild" ]);
+    forwardMethodsToWrapper([ window.HTMLBodyElement, window.HTMLHeadElement, window.HTMLHtmlElement ], matchesNames);
     forwardMethodsToWrapper([ window.HTMLDocument || window.Document ], [ "adoptNode", "importNode", "contains", "createComment", "createDocumentFragment", "createElement", "createElementNS", "createEvent", "createEventNS", "createRange", "createTextNode", "elementFromPoint", "getElementById", "getElementsByName", "getSelection" ]);
     mixin(Document.prototype, GetElementsByInterface);
     mixin(Document.prototype, ParentNodeInterface);
@@ -4695,7 +4698,7 @@ if (WebComponents.flags.shadow) {
 (function(global) {
   var registrationsTable = new WeakMap();
   var setImmediate;
-  if (/Trident/.test(navigator.userAgent)) {
+  if (/Trident|Edge/.test(navigator.userAgent)) {
     setImmediate = setTimeout;
   } else if (window.setImmediate) {
     setImmediate = window.setImmediate;
@@ -5013,7 +5016,7 @@ window.HTMLImports = window.HTMLImports || {
   };
   Object.defineProperty(document, "_currentScript", currentScriptDescriptor);
   Object.defineProperty(rootDocument, "_currentScript", currentScriptDescriptor);
-  var isIE = /Trident/.test(navigator.userAgent);
+  var isIE = /Trident|Edge/.test(navigator.userAgent);
   function whenReady(callback, doc) {
     doc = doc || rootDocument;
     whenDocumentReady(function() {
@@ -5115,9 +5118,9 @@ window.HTMLImports = window.HTMLImports || {
   whenReady(function() {
     HTMLImports.ready = true;
     HTMLImports.readyTime = new Date().getTime();
-    rootDocument.dispatchEvent(new CustomEvent("HTMLImportsLoaded", {
-      bubbles: true
-    }));
+    var evt = rootDocument.createEvent("CustomEvent");
+    evt.initCustomEvent("HTMLImportsLoaded", true, true, {});
+    rootDocument.dispatchEvent(evt);
   });
   scope.IMPORT_LINK_TYPE = IMPORT_LINK_TYPE;
   scope.useNative = useNative;
@@ -5168,7 +5171,7 @@ HTMLImports.addModule(function(scope) {
 });
 
 HTMLImports.addModule(function(scope) {
-  xhr = {
+  var xhr = {
     async: true,
     ok: function(request) {
       return request.status >= 200 && request.status < 300 || request.status === 304 || request.status === 0;
@@ -5245,7 +5248,13 @@ HTMLImports.addModule(function(scope) {
     },
     fetch: function(url, elt) {
       flags.load && console.log("fetch", url, elt);
-      if (url.match(/^data:/)) {
+      if (!url) {
+        setTimeout(function() {
+          this.receive(url, elt, {
+            error: "href must be specified"
+          }, null);
+        }.bind(this), 0);
+      } else if (url.match(/^data:/)) {
         var pieces = url.split(",");
         var header = pieces[0];
         var body = pieces[1];
@@ -5435,12 +5444,7 @@ HTMLImports.addModule(function(scope) {
     },
     addElementToDocument: function(elt) {
       var port = this.rootImportForElement(elt.__importElement || elt);
-      var l = port.__insertedElements = port.__insertedElements || 0;
-      var refNode = port.nextElementSibling;
-      for (var i = 0; i < l; i++) {
-        refNode = refNode && refNode.nextElementSibling;
-      }
-      port.parentNode.insertBefore(elt, refNode);
+      port.parentNode.insertBefore(elt, port);
     },
     trackElement: function(elt, callback) {
       var self = this;
@@ -5620,7 +5624,9 @@ HTMLImports.addModule(function(scope) {
     var base = doc.createElement("base");
     base.setAttribute("href", url);
     if (!doc.baseURI) {
-      doc.baseURI = url;
+      Object.defineProperty(doc, "baseURI", {
+        value: url
+      });
     }
     var meta = doc.createElement("meta");
     meta.setAttribute("charset", "utf-8");
@@ -5652,7 +5658,7 @@ HTMLImports.addModule(function(scope) {
   var importer = scope.importer;
   var dynamic = {
     added: function(nodes) {
-      var owner, parsed;
+      var owner, parsed, loading;
       for (var i = 0, l = nodes.length, n; i < l && (n = nodes[i]); i++) {
         if (!owner) {
           owner = n.ownerDocument;
@@ -5679,16 +5685,19 @@ HTMLImports.addModule(function(scope) {
 });
 
 (function(scope) {
-  initializeModules = scope.initializeModules;
+  var initializeModules = scope.initializeModules;
+  var isIE = scope.isIE;
   if (scope.useNative) {
     return;
   }
-  if (typeof window.CustomEvent !== "function") {
-    window.CustomEvent = function(inType, dictionary) {
-      var e = document.createEvent("HTMLEvents");
-      e.initEvent(inType, dictionary.bubbles === false ? false : true, dictionary.cancelable === false ? false : true, dictionary.detail);
+  if (isIE && typeof window.CustomEvent !== "function") {
+    window.CustomEvent = function(inType, params) {
+      params = params || {};
+      var e = document.createEvent("CustomEvent");
+      e.initCustomEvent(inType, Boolean(params.bubbles), Boolean(params.cancelable), params.detail);
       return e;
     };
+    window.CustomEvent.prototype = window.Event.prototype;
   }
   initializeModules();
   var rootDocument = scope.rootDocument;
@@ -6226,6 +6235,7 @@ CustomElements.addModule(function(scope) {
 (function(scope) {
   var useNative = scope.useNative;
   var initializeModules = scope.initializeModules;
+  var isIE11OrOlder = /Trident/.test(navigator.userAgent);
   if (useNative) {
     var nop = function() {};
     scope.watchShadow = nop;
@@ -6269,7 +6279,7 @@ CustomElements.addModule(function(scope) {
       }));
     });
   }
-  if (typeof window.CustomEvent !== "function") {
+  if (isIE11OrOlder && typeof window.CustomEvent !== "function") {
     window.CustomEvent = function(inType, params) {
       params = params || {};
       var e = document.createEvent("CustomEvent");
