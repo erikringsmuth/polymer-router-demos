@@ -25,6 +25,9 @@ The [&lt;app-router&gt;](https://erikringsmuth.github.io/app-router/) adds data 
 2. Start the express.js server with `node server.js`
 3. Open [http://localhost:8080/](http://localhost:8080/)
 
+#### excess-router ([live demo](http://atotic.github.io/excess-router/components/excess-router/demo/index.html))
+[excess-router](https://github.com/atotic/excess-router) is a Polymer 1.0 compatible router. Implements express-style path patching, route transition lifecycle, and a JS routing library similar to page.js.
+
 ## Notes
 The choice comes down to complexity. If you don't need data binding you probably don't need a router.
 
